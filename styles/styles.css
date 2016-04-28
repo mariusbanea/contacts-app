@@ -1,0 +1,77 @@
+div, section {
+  /*border: 1px solid black;*/
+}
+
+header {
+  font-size: 18pt;  
+}
+
+.main {
+  width: 85%;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.left-column {
+  display: inline-block;
+  width: 75%;
+  padding: 0;
+  margin: 0;
+}
+
+.right-column {
+  display: inline-block;
+  width: 24%;
+  padding: 0;
+  margin: 0;
+  vertical-align: top;
+}
+
+.full-width {
+  display: block;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.form-group {
+  padding: 5px;
+}
+
+.form-group label {
+  display: block;
+}
+
+.form-group input {
+  width: 80%;
+}
+
+button {
+  background-color: lightseagreen;
+  border-radius: 0.8em;
+  height: 40px;
+  width: 80px;
+  border-style: none;
+  overflow: visible;
+  margin: 0;
+  outline-width: 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button:active {
+  background-color: green;
+}
+
+.feedback {
+  height: 12px;
+  margin: 10px 500px 4px 0;
+}
+
+.feedback p {
+  background-color: red;
+  color: white;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  display: none;
+}
