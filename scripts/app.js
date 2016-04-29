@@ -2,10 +2,7 @@
 
 function AddressBook() {
     this.knownKeys = ['firstName', 'lastName', 'street', 'city', 'state', 'phoneNumber'];
-
-    this.addresses = [
-
-  ];
+    this.addresses = [];
 }
 
 AddressBook.prototype = {
@@ -29,37 +26,36 @@ AddressBook.prototype = {
             return contact.id === id;
         });
     }
-
-
 };
 
 function AddressForm() {
+    //list of all input field IDs
     this.inputFieldIds = ['firstName', 'lastName', 'street', 'city', 'state', 'phoneNumber'];
 }
 
 AddressForm.prototype = {
 
     collectFormData: function () {
-        var o = {};
-
-        this.inputFieldIds.forEach(function (el) {
-            o[el] = $('#' + el).val();
+        var output = {};
+        //for each of the input fields match the IDs and their values, and add them to the output array;
+        this.inputFieldIds.forEach(function (element) {
+            output[element] = $('#' + element).val();
         });
-
-        return o;
+        return output;
     },
 
     clearFormData: function () {
-        this.inputFieldIds.forEach(function (el) {
-            $('#' + el).val('');
+        //reset all the values to empty
+        this.inputFieldIds.forEach(function (element) {
+            $('#' + element).val('');
         });
     },
 
     validateFormData: function (contact) {
+        //if the first name and the last name are empty
         if (!contact.firstName || !contact.lastName) return false;
         return true;
     }
-
 };
 
 var addressBook = new AddressBook();
@@ -77,23 +73,19 @@ function renderContacts(addressBook) {
     $('.contacts-list ul').empty();
 
     addressBook.addresses.forEach(function (contact) {
-        $('.contacts-list ul').append(`<li><a href='#' class='show-contact' id='${contact.id}-show-contact'>${contact.firstName}</a></li>`);
+        $('.contacts-list ul').append("<li><a href='#' class='show-contact' id='" + contact.id + "-show-contact'>" + contact.firstName + " " + contact.lastName + "</a></li>");
     });
 }
 
 function createDetailHtml(addressBook, contact) {
     var html = '';
     addressBook.knownKeys.forEach(function (keyName) {
-        if (contact[keyName]) html += `<strong>${prettifyFieldName(keyName)}:</strong> ${contact[keyName]}<br />`;
+        if (contact[keyName]) html += "<li><strong>" + prettifyFieldName(keyName) + ": </strong>" + contact[keyName] + "</li>";
     });
-    return html;
+    $('#contact-detail-info').html(html);
 }
 
-function renderDetail(addressBook, contact) {
-    $('#contact-detail-info').html(createDetailHtml(addressBook, contact));
-}
-
-function sendFeedback(msg, fadeTime) {
+function showError(msg, fadeTime) {
     fadeTime = fadeTime || 2000;
     $('.feedback p').text(msg).fadeIn(1000, function () {
         setTimeout(function () {
@@ -114,7 +106,7 @@ $(function () {
             addressForm.clearFormData();
             renderContacts(addressBook);
         } else {
-            sendFeedback("You must enter a first and last name.");
+            showError("You must enter a first and last name.");
         }
 
     });
@@ -122,7 +114,7 @@ $(function () {
     $('.contacts-list').on('click', '.show-contact', function (e) {
         e.preventDefault();
         var contact = addressBook.getContact(parseInt(e.target.id));
-        renderDetail(addressBook, contact);
+        createDetailHtml(addressBook, contact);
     });
 
 });
