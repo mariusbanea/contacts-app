@@ -1,5 +1,6 @@
 'use strict';
 
+//create the constructor for the Address book
 function AddressBook() {
     this.knownKeys = ['firstName', 'lastName', 'street', 'city', 'state', 'phoneNumber'];
     this.addresses = [];
@@ -8,8 +9,10 @@ function AddressBook() {
 AddressBook.prototype = {
     //create the next empty ID to be populated by the following contact
     newId: function () {
+        //if there are no IDs set create ID 1;
         if (this.addresses.length == 0) return 1;
         return (
+            //check the last ID set so far and return that ID + 1
             Math.max.apply(null, this.addresses.map(function (address) {
                 return address.id;
             })) + 1
@@ -17,11 +20,14 @@ AddressBook.prototype = {
     },
     //add a contact function
     addContact: function (contact) {
+        //get the last ID created above and
         contact.id = this.newId();
+        // populate the rest of the contact details
         this.addresses.push(contact);
     },
     //get a contact function
     getContact: function (id) {
+        //search for a contact based the input received
         return this.addresses.find(function (contact) {
             return contact.id === id;
         });
@@ -43,16 +49,16 @@ AddressForm.prototype = {
         });
         return output;
     },
-
+    //clear for data for a particular ID
     clearFormData: function () {
         //reset all the values to empty
         this.inputFieldIds.forEach(function (element) {
             $('#' + element).val('');
         });
     },
-
+    //validate form data
     validateFormData: function (contact) {
-        //if the first name and the last name are empty
+        //if the first name and the last name are empty (!contact.firstName ==> if the first name is not set)
         if (!contact.firstName || !contact.lastName) return false;
         return true;
     }
