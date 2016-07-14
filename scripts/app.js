@@ -1,5 +1,7 @@
 'use strict';
 
+//step 1 - create functions and objects
+
 //create the constructor for the Address book
 function AddressBook() {
     this.knownKeys = ['firstName', 'lastName', 'street', 'city', 'state', 'phoneNumber'];
@@ -74,7 +76,7 @@ function prettifyFieldName(name) {
             return str.toUpperCase();
         });
 }
-
+// show contact names in order to be click for more details
 function renderContacts(addressBook) {
     $('.contacts-list ul').empty();
 
@@ -82,15 +84,19 @@ function renderContacts(addressBook) {
         $('.contacts-list ul').append("<li><a href='#' class='show-contact' id='" + contact.id + "-show-contact'>" + contact.firstName + " " + contact.lastName + "</a></li>");
     });
 }
-
+//show contact details after you click on the contact name
 function createDetailHtml(addressBook, contact) {
-    var html = '';
+    var htmlOutput = '';
     addressBook.knownKeys.forEach(function (keyName) {
-        if (contact[keyName]) html += "<li><strong>" + prettifyFieldName(keyName) + ": </strong>" + contact[keyName] + "</li>";
+        //the keyname is the key of the address book array (firstNamea, lastName etc)
+        if (contact[keyName]) {
+            htmlOutput += "<li><strong>" + prettifyFieldName(keyName) + ": </strong>" + contact[keyName] + "</li>";
+        }
     });
-    $('#contact-detail-info').html(html);
+    $('#contact-detail-info').html(htmlOutput);
 }
 
+//if there are errors in the input form, show them
 function showError(msg, fadeTime) {
     fadeTime = fadeTime || 2000;
     $('.feedback p').text(msg).fadeIn(1000, function () {
@@ -99,11 +105,14 @@ function showError(msg, fadeTime) {
         }, fadeTime);
     });
 }
+//step 2 - use functions and objects
+$(document).ready(function () {
 
-$(function () {
+    $('button#add-contact').click(function (event) {
+        //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
+        event.preventDefault();
 
-    $('button#add-contact').click(function (e) {
-        e.preventDefault();
+        //collect all the form data to put them in the address book
         var contact = addressForm.collectFormData();
 
         // validation
@@ -117,10 +126,10 @@ $(function () {
 
     });
 
-    $('.contacts-list').on('click', '.show-contact', function (e) {
-        e.preventDefault();
-        var contact = addressBook.getContact(parseInt(e.target.id));
+    $('.contacts-list').on('click', '.show-contact', function (event) {
+        //if the page refreshes when you submit the form use "preventDefault()" to force JavaScript to handle the form submission
+        event.preventDefault();
+        var contact = addressBook.getContact(parseInt(event.target.id));
         createDetailHtml(addressBook, contact);
     });
-
 });
